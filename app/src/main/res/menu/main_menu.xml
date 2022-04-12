@@ -9,5 +9,10 @@
         android:icon="@drawable/ic_icons8_share"
         android:title="SHARE"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menuButton"
+        android:icon="@drawable/ic_icons8_menu_rounded_50"
+        android:title="MENU"
+        app:showAsAction="ifRoom" />
 
 </menu>

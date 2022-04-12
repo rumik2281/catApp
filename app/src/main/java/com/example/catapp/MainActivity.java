@@ -77,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
                 sharingIntent.putExtra(Intent.EXTRA_SUBJECT, shareSubject);
                 startActivity(Intent.createChooser(sharingIntent, "Share using"));
                 break;
+            case R.id.menuButton:
+                Intent myIntent = new Intent(this, MenuActivity.class);
+                startActivity(myIntent);
         }
         return super.onOptionsItemSelected(item);
     }
