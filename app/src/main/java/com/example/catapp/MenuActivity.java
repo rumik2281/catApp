@@ -16,12 +16,23 @@ import com.google.android.gms.auth.api.signin.SignInAccount;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MenuActivity extends Activity {
     Button ftcButton;
     SignInButton signButton;
     GoogleSignInClient nGoogleSignInClient;
     TextView googleName;
+    FirebaseDatabase db;
+    DatabaseReference users;
+    Button regButton;
+    int highscore;
+    GoogleSignInAccount account;
+    private int getHighscore() {
+        return highscore;
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -34,7 +45,7 @@ public class MenuActivity extends Activity {
 
     public void handleSignInResult(Task<GoogleSignInAccount> task) {
         try {
-            GoogleSignInAccount account = task.getResult(ApiException.class);
+            account = task.getResult(ApiException.class);
             System.out.println(account.toString());
             googleSignInOk(account);
         } catch(Exception e) {
@@ -48,6 +59,10 @@ public class MenuActivity extends Activity {
             googleName.setText("Error");
         } else {
             googleName.setText(account.getDisplayName());
+            User user = new User();
+            user.setMail(account.getId());
+            user.setHighscore(3);
+            users.child(user.getMail()).setValue(user);
         }
     }
 
@@ -55,8 +70,12 @@ public class MenuActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_main);
+        db = FirebaseDatabase.getInstance("https://catapp-8482c-default-rtdb.europe-west1.firebasedatabase.app");
+        users = db.getReference("Users");
+
         googleName = findViewById(R.id.nameText);
         signButton = (SignInButton) findViewById(R.id.sgnButton);
+        regButton = (Button) findViewById(R.id.regButton);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         nGoogleSignInClient = GoogleSignIn.getClient(this,gso);
         signButton.setOnClickListener(new View.OnClickListener() {
@@ -64,6 +83,12 @@ public class MenuActivity extends Activity {
             public void onClick(View view) {
                 Intent signInIntent = nGoogleSignInClient.getSignInIntent();
                 startActivityForResult(signInIntent, 100);
+            }
+        });
+        regButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
         ftcButton = (Button) findViewById(R.id.ftcButton);
@@ -76,6 +101,7 @@ public class MenuActivity extends Activity {
                 startActivity(myIntent);
             }
         });
+
 
         };
     }

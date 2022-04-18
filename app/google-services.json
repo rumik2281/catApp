@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "435787969497",
+    "firebase_url": "https://catapp-8482c-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "catapp-8482c",
+    "storage_bucket": "catapp-8482c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:435787969497:android:edac90cd214f10bf18dfc8",
+        "android_client_info": {
+          "package_name": "com.example.catapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "435787969497-ctbcn8d9dbs3qt7t0a4aqki461d9qiul.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuTaoRZmdn8KbsZ0sOoT9IshyxOyic8vo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "435787969497-ctbcn8d9dbs3qt7t0a4aqki461d9qiul.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
