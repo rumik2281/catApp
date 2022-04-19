@@ -6,7 +6,7 @@ plugins {
 android {
     signingConfigs {
         debug {
-            storeFile file('C:\\Users\\Intel\\Desktop\\key.jks')
+            storeFile file('C:\\Users\\KIRYL\\Desktop\\key.jks')
             storePassword 'qwerty'
             keyAlias 'key'
             keyPassword 'qwerty'

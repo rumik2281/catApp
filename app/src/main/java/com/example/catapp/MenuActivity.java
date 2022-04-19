@@ -8,14 +8,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.SignInAccount;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -28,10 +31,11 @@ public class MenuActivity extends Activity {
     DatabaseReference users;
     Button regButton;
     int highscore;
+    static int score;
     GoogleSignInAccount account;
-    private int getHighscore() {
-        return highscore;
-    }
+    public static DAO dao = new DAO();
+    public static boolean authorized = false;
+
 
 
     @Override
@@ -59,10 +63,9 @@ public class MenuActivity extends Activity {
             googleName.setText("Error");
         } else {
             googleName.setText(account.getDisplayName());
-            User user = new User();
-            user.setMail(account.getId());
-            user.setHighscore(3);
-            users.child(user.getMail()).setValue(user);
+            dao.setId(account.getId());
+            authorized = true;
+            System.out.println(dao.getScoreFromDB());
         }
     }
 

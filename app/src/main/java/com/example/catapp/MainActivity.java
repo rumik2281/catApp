@@ -11,21 +11,34 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import androidx.annotation.NonNull;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
     Button feedButton;
     int satiety;
     ImageView myImageView;
 
+
+
+
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         myImageView = findViewById(R.id.imageView);
+
+
+            if (MenuActivity.authorized) {
+                satiety = MenuActivity.dao.getScoreFromDB();
+                System.out.println(satiety);
+                ((TextView) findViewById(R.id.satietyCounter)).setText(Integer.toString(satiety));
+            }
 
         final Animation animationRotateCenter = AnimationUtils.loadAnimation(
                 this, R.anim.rotate_center);
@@ -37,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 satiety++;
                 ((TextView) findViewById(R.id.satietyCounter)).setText(Integer.toString(satiety));
+                MenuActivity.dao.saveToDB(satiety);
                 if (satiety % 15 == 0) {
                     myImageView.startAnimation(animationRotateCenter);
                 }
