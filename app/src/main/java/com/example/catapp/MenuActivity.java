@@ -4,11 +4,16 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -22,7 +27,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class MenuActivity extends Activity {
+public class MenuActivity extends AppCompatActivity {
     Button ftcButton;
     SignInButton signButton;
     GoogleSignInClient nGoogleSignInClient;
@@ -30,14 +35,19 @@ public class MenuActivity extends Activity {
     FirebaseDatabase db;
     DatabaseReference users;
     Button regButton;
+    Button aboutButton;
+    Button tableButton;
+    Toast toast;
     int highscore;
     static int score;
-    GoogleSignInAccount account;
+    static GoogleSignInAccount account;
     public static DAO dao = new DAO();
     public static boolean authorized = false;
 
 
-
+    public static String getAccName() {
+        return account.getDisplayName();
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -64,8 +74,14 @@ public class MenuActivity extends Activity {
         } else {
             googleName.setText(account.getDisplayName());
             dao.setId(account.getId());
+            try {
+                dao.getScoreFromDB();
+            } catch (Exception e) {
+                dao.saveToDB(0);
+            }
             authorized = true;
             System.out.println(dao.getScoreFromDB());
+
         }
     }
 
@@ -78,7 +94,8 @@ public class MenuActivity extends Activity {
 
         googleName = findViewById(R.id.nameText);
         signButton = (SignInButton) findViewById(R.id.sgnButton);
-        regButton = (Button) findViewById(R.id.regButton);
+        aboutButton = (Button) findViewById(R.id.aboutButton);
+        tableButton = (Button) findViewById(R.id.leaderButton);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         nGoogleSignInClient = GoogleSignIn.getClient(this,gso);
         signButton.setOnClickListener(new View.OnClickListener() {
@@ -88,10 +105,15 @@ public class MenuActivity extends Activity {
                 startActivityForResult(signInIntent, 100);
             }
         });
-        regButton.setOnClickListener(new View.OnClickListener() {
+        aboutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                MyDialogFragment myDialogFragment = new MyDialogFragment();
+                FragmentManager manager = getSupportFragmentManager();
+                //myDialogFragment.show(manager, "dialog");
 
+                FragmentTransaction transaction = manager.beginTransaction();
+                myDialogFragment.show(transaction, "dialog");
             }
         });
         ftcButton = (Button) findViewById(R.id.ftcButton);
@@ -104,7 +126,20 @@ public class MenuActivity extends Activity {
                 startActivity(myIntent);
             }
         });
+        Intent intent = new Intent(this, TableActivity.class);
+        tableButton.setOnClickListener(new View.OnClickListener() {
+
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onClick(View view) {
+                startActivity(intent);
+            }
+        });
 
 
-        };
+        }
+    public void showToast(View view) {
+        //создаём и отображаем текстовое уведомление
+
+    }
     }

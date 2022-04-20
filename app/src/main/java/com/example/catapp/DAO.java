@@ -6,8 +6,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DAO {
     private String id;
@@ -29,14 +34,21 @@ public class DAO {
             users.child(id).child("highscore").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DataSnapshot> task) {
-                    highscore = Integer.parseInt(String.valueOf(task.getResult().getValue()));
+                    if (String.valueOf(task.getResult().getValue()) == "null") {
+                        highscore = 0;
+                    } else {
+                        highscore = Integer.parseInt(String.valueOf(task.getResult().getValue()));
+                    }
                 }
             });
             return highscore;
     }
 
+
+
     public void saveToDB(int score) {
         User user = new User();
+        user.setName(MenuActivity.getAccName());
         user.setMail(id);
         user.setHighscore(score);
         users.child(user.getMail()).setValue(user);

@@ -2,6 +2,16 @@ package com.example.catapp;
 
 public class User {
     String mail;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    String name;
     int highscore;
 
     public User() {}
